@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
 using SalesWebMvc.Services;
-
+using SalesWebMvc.Models.ViewModels;
 namespace SalesWebMvc.Controllers
 {
     public class VendasController : Controller
     {
         private readonly VendasServices _vendasServices;
+        private readonly DepartamentoServices _departamentoServices;
 
-        public VendasController(VendasServices vendasServices)
+        public VendasController(VendasServices vendasServices, DepartamentoServices departamentoServices)
         {
             _vendasServices = vendasServices;
+            _departamentoServices = departamentoServices;
+
         }
 
         public IActionResult Index()
@@ -20,7 +23,9 @@ namespace SalesWebMvc.Controllers
         }
         public IActionResult Criar()
         {
-            return View();
+            var departamentos = _departamentoServices.EncontrarTudo();
+            var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
