@@ -19,9 +19,9 @@ namespace SalesWebMvc.Models
 
         }
 
-        public Vendedor(int id, string nome, string email, DateTime dataNascimento, double baseSalario, Departamento departamento)
+        public Vendedor( string nome, string email, DateTime dataNascimento, double baseSalario, Departamento departamento)
         {
-            Id = id;
+            //Id = id;
             Nome = nome;
             Email = email;
             DataNascimento = dataNascimento;
