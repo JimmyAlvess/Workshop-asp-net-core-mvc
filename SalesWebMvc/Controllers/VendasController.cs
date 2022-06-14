@@ -4,6 +4,8 @@ using SalesWebMvc.Services;
 using SalesWebMvc.Models.ViewModels;
 using System.Collections.Generic;
 using SalesWebMvc.Services.Exceptions;
+using System.Diagnostics;
+using System;
 
 namespace SalesWebMvc.Controllers
 {
@@ -40,45 +42,45 @@ namespace SalesWebMvc.Controllers
         }
         public IActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new {message = "Id não fornecido"});
             }
             var obj = _vendasServices.EncotrarPorId(id.Value);
-            if(obj == null)
+            if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Não existente" });
             }
             return View(obj);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete (int id)
+        public IActionResult Delete(int id)
         {
             _vendasServices.Remover(id);
             return RedirectToAction(nameof(Index));
         }
         public IActionResult Detalhes(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Não existente" });
             }
             var obj = _vendasServices.EncotrarPorId(id.Value);
-            if(obj == null)
+            if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Não fornecido" });
             }
             return View(obj);
         }
         public IActionResult Editar(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Não fornecido" });
             }
             var obj = _vendasServices.EncotrarPorId(id.Value);
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -92,21 +94,31 @@ namespace SalesWebMvc.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id não Incompativel" });
             }
             try
             {
                 _vendasServices.Update(vendedor);
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new {message = e.Message });
             }
-            catch (DbConcurrencyException)
-            {
-                return BadRequest();
-            }
+           
         }
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
+        }
+
+
     }
 }
+
