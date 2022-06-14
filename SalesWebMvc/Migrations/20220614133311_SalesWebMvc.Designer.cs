@@ -10,8 +10,8 @@ using SalesWebMvc.Models;
 namespace SalesWebMvc.Migrations
 {
     [DbContext(typeof(SalesWebMvcContext))]
-    [Migration("20220608151120_DepartamentoForeignkey")]
-    partial class DepartamentoForeignkey
+    [Migration("20220614133311_SalesWebMvc")]
+    partial class SalesWebMvc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
