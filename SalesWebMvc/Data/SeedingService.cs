@@ -23,10 +23,10 @@ namespace SalesWebMvc.Models
                 return; // DB Já foi populado
             }
 
-            Departamento d1 = new Departamento("Computador");
+            Departamento d1 = new Departamento("Computadores");
             Departamento d2 = new Departamento("Iphone");
-            Departamento d3 = new Departamento("ComidaPet");
-            Departamento d4 = new Departamento("notbook");
+            Departamento d3 = new Departamento("Eletronicos");
+            Departamento d4 = new Departamento("Pet");
 
             Vendedor v1 = new Vendedor("Matheus Alves", "matheus.180960@gmail.com", new DateTime(2000, 8, 09), 4500.0, d1);
             Vendedor v2 = new Vendedor("Luana jesus", "luana05@gmail.com", new DateTime(2001,5, 10),5000.0, d2);
