@@ -7,12 +7,24 @@ namespace SalesWebMvc.Models
     public class Vendedor
     {
         public int Id { get; set; }
+
+
+        [Required(ErrorMessage = "{0} Campo Requerido")]
+        [StringLength(60, MinimumLength = 3,ErrorMessage = "O {0} deve conter no  minimo {2} caracteres e maximo {1}")]
         public string Nome { get; set; }
+
+        [Required(ErrorMessage = "{0} Campo Requerido")]
         [DataType(DataType.EmailAddress)]
+        
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "{0} Campo Requerido")]
         [Display(Name ="Data de Nascimento")]
         [DataType(DataType.Date)]
         public DateTime DataNascimento { get; set; }
+
+        [Required(ErrorMessage = "{0} Campo Requerido")]
+        [Range(100.0, 50000.0, ErrorMessage = "O {0} deve conter no  minimo {1} caracteres e maximo {2}")]
         [Display(Name = "Base Salario")]
         [DisplayFormat(DataFormatString ="{0:F2}")]
         public double BaseSalario { get; set; }
