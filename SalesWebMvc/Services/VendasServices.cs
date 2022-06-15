@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Services.Exceptions;
+using System.Threading.Tasks;
 
 namespace SalesWebMvc.Services
 {
@@ -15,36 +16,36 @@ namespace SalesWebMvc.Services
             _context = context;
         }
 
-        public List<Vendedor> FindAll()
+        public async Task<List<Vendedor>> FindAllAsync()
         {
-            return _context.Vendedor.ToList();
+            return await _context.Vendedor.ToListAsync();
         }
 
-        public void Insert(Vendedor obj)
+        public async Task InsertAsync(Vendedor obj)
         {
             _context.Add(obj);
-            _context.SaveChanges();   
+            _context.SaveChangesAsync();   
         }
-        public Vendedor EncotrarPorId(int id)
+        public async  Task<Vendedor> EncotrarPorIdAsync(int id)
         {
-            return _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefault(obj => obj.Id == id);
+            return await _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefaultAsync(obj => obj.Id == id);
         }
-        public void Remover(int id)
+        public async Task RemoverAsync(int id)
         {
-            var obj = _context.Vendedor.Find(id);
+            var obj = await _context.Vendedor.FindAsync(id);
             _context.Vendedor.Remove(obj);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
-        public void Update(Vendedor obj)
-        {
-            if(!_context.Vendedor.Any(x => x.Id == obj.Id))
+        public async Task UpdateAsync(Vendedor obj)
+        { bool temAlgum = await _context.Vendedor.AnyAsync(x => x.Id == obj.Id);
+            if (!temAlgum)
             {
                 throw new NotFoundException("Id não existe");
             }
             try
             {
                 _context.Update(obj);
-                _context.SaveChanges();
+                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)
             {
