@@ -24,7 +24,7 @@ namespace SalesWebMvc.Services
         public async Task InsertAsync(Vendedor obj)
         {
             _context.Add(obj);
-            _context.SaveChangesAsync();   
+            await _context.SaveChangesAsync();
         }
         public async  Task<Vendedor> EncotrarPorIdAsync(int id)
         {
@@ -32,9 +32,17 @@ namespace SalesWebMvc.Services
         }
         public async Task RemoverAsync(int id)
         {
-            var obj = await _context.Vendedor.FindAsync(id);
-            _context.Vendedor.Remove(obj);
-            _context.SaveChangesAsync();
+            try
+            {
+                var obj = await _context.Vendedor.FindAsync(id);
+                _context.Vendedor.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException e)
+            {
+                throw new IntegrityException("Não pode deletar o vendedor(a) porque o mesmo tem vendas! ");
+            }
+
         }
         public async Task UpdateAsync(Vendedor obj)
         { bool temAlgum = await _context.Vendedor.AnyAsync(x => x.Id == obj.Id);

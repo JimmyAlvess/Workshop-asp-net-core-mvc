@@ -1,0 +1,13 @@
+﻿using System;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace SalesWebMvc.Services.Exceptions
+{
+    public class IntegrityException : ApplicationException
+    {
+        public IntegrityException(string message) : base(message)
+        {
+
+        }
+    }
+}
